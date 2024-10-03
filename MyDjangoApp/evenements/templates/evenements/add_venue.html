@@ -1,0 +1,30 @@
+{% extends 'evenements/base.html' %}
+
+{% block content %}
+{%if user.is_authenticated%}
+    <center>
+        <h1>Add Venue</h1>
+  <br/><br/>
+
+{% if submitted %}
+    Your Venue has been added successfully.
+
+{% else %}
+
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" class="btn btn-secondary">
+
+  </form>
+{% endif %}
+<center/>
+{%else%}
+    <center>
+        <h1>Access Denied</h1>
+        <br/><br/>
+        <h3>You are not authorized to access this page.</h3>
+    </center>
+{%endif%}
+<br/><br/>
+{% endblock %}

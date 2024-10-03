@@ -1,0 +1,27 @@
+{% extends 'evenements/base.html' %}
+
+{% block content %}
+  
+  <div class="text-center mt-5">
+    <h1 class="display-4">{{ month }} {{ year }} Events</h1>
+    <p class="text-muted">Last updated: {{ current_time }}</p>
+  </div>
+  
+  <div class="mt-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <center>{{ cal | safe }}<center/>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-5 text-center">
+    <h2>Upcoming Events</h2>
+    <p class="lead">Don't miss out on our future events. Check back often for updates!</p>
+  </div>
+  
+  <footer class="text-center mt-5 mb-3">
+    <p class="text-muted">&copy; {{ current_year }} Event Management. All rights reserved.</p>
+  </footer>
+  
+{% endblock %}
