@@ -1,30 +1,55 @@
 {% extends 'evenements/base.html' %}
 
 {% block content %}
-{%if user.is_authenticated%}
-    <center>
-        <h1>Add Venue</h1>
-  <br/><br/>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        
+        {% if user.is_authenticated %}
+          <div class="card shadow-lg" style="border-radius: 20px;">
+            <div class="card-body p-5">
+              <h1 class="text-center" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">Add Venue</h1>
+              <br/><br/>
 
-{% if submitted %}
-    Your Venue has been added successfully.
+              {% if submitted %}
+                <div class="alert alert-success text-center" role="alert">
+                  Your Venue has been added successfully.
+                </div>
+              {% else %}
 
-{% else %}
+                <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  
+                  <div class="form-group">
+                    {% for field in form %}
+                      <div class="mb-3">
+                        <label class="form-label" for="{{ field.id_for_label }}" style="font-weight: 600;">{{ field.label }}</label>
+                        {{ field }}
+                        <div class="text-danger small">{{ field.errors }}</div>
+                      </div>
+                    {% endfor %}
+                  </div>
 
-  <form action="" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" class="btn btn-secondary">
+                  <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-secondary btn-lg" style="border-radius: 50px; padding: 10px 30px; font-weight: 600;">
+                      Submit
+                    </button>
+                  </div>
 
-  </form>
-{% endif %}
-<center/>
-{%else%}
-    <center>
-        <h1>Access Denied</h1>
-        <br/><br/>
-        <h3>You are not authorized to access this page.</h3>
-    </center>
-{%endif%}
-<br/><br/>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+          <div class="text-center">
+            <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700;">Access Denied</h1>
+            <br/><br/>
+            <h3 style="color: #ff0000;">You are not authorized to access this page.</h3>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}

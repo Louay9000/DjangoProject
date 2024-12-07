@@ -16,6 +16,19 @@
   <button type="submit" style="width: 100%; padding: 10px; background-color: #333333; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
       Login
   </button>
+
+  {% if messages %}
+    
+    
+      {% for message in messages %}
+        
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>{{message}}</strong>
+          
+        </div>
+      {% endfor %}
+      
+      {% endif %}
   
   <p style="text-align: center; margin-top: 15px; color: #777;">Don't have an account? <a href="{% url "register" %}" style="color: #333333; text-decoration: none;">Sign up</a></p>
 </form>

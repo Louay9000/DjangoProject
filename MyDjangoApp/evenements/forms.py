@@ -7,13 +7,14 @@ from .models import Venue, Evenement
 class VenueForm(ModelForm):
     class Meta:
         model = Venue
-        fields = ('name', 'address', 'zip_code', 'web', 'email_address')
+        fields = ('name', 'address', 'zip_code', 'web', 'image','email_address')
         labels= {
             'name': '',
             'address': '',
             'zip_code': '',
             'phone': '',
             'web': '',
+            'image':'',
             'email_address': '',
         }
         
@@ -24,6 +25,7 @@ class VenueForm(ModelForm):
             'zip_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zip Code'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
             'web': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Web_Address'}),
+            'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Image'}),
             'email_address': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email_ddress'}),  
         }
         
@@ -32,13 +34,14 @@ class VenueForm(ModelForm):
 class VenueForm(ModelForm):
     class Meta:
         model = Venue
-        fields = ('name', 'address', 'zip_code', 'web', 'email_address')
+        fields = ('name', 'address', 'zip_code', 'web', 'image','email_address')
         labels= {
             'name': '',
             'address': '',
             'zip_code': '',
             'phone': '',
             'web': '',
+            'image':'',
             'email_address': '',
         }
         
@@ -49,6 +52,7 @@ class VenueForm(ModelForm):
             'zip_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zip Code'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
             'web': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Web_Address'}),
+            'image': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Image'}),
             'email_address': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email_ddress'}),  
         }
         
@@ -78,7 +82,7 @@ class EvenementFormAdmin(ModelForm):
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Event_venue'}),
             'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Event_manager'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Event_description'}),
-            'attendees': forms.SelectMultiple(attrs={'class': 'form-select', 'placeholder': 'Event_attendees'}),  
+            'attendees': forms.TextInput(attrs={'class': 'form-select', 'placeholder': 'Event_attendees'}),  
         }  
         
         
@@ -103,7 +107,7 @@ class EvenementForm(ModelForm):
             'evenement_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event_date'}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Event_venue'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Event_description'}),
-            'attendees': forms.SelectMultiple(attrs={'class': 'form-select', 'placeholder': 'Event_attendees'}),  
+            'attendees': forms.TextInput(attrs={'class': 'form-select', 'placeholder': 'Event_attendees'}),  
         }  
     
     

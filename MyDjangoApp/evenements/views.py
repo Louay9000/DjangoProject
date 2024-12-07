@@ -4,6 +4,7 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from django.contrib import messages
+from django.urls import reverse
 from .models import Evenement, Venue
 from .forms import VenueForm , EvenementForm,EvenementFormAdmin
 from django.http import HttpResponseRedirect
@@ -33,7 +34,7 @@ def admin_approval(request):
         
         
         
-        messages.success(request, 'Selected events have been approved')
+        messages.success(request, 'Selected events have been changed')
         return redirect('list-evenements')
       else:
         return render(request, 'evenements/admin_approval.html', 
@@ -134,10 +135,16 @@ def delete_evenement(request, evenement_id):
 
 def update_evenement(request, evenement_id):  
   evenement = Evenement.objects.get(pk=evenement_id)
-  if request.user.is_superuser:
+  if request.user.is_superuser :
     form=EvenementFormAdmin(request.POST or None,instance=evenement)
-  else:  
+  elif request.user == evenement.manager:  
     form=EvenementForm(request.POST or None,instance=evenement)
+  elif request.user != evenement.manager:
+    messages.error(request, 'You are not allowed to edit this event')
+    return redirect('list-evenements')
+  else:
+    messages.error(request, 'Error')
+    return redirect('list-evenements')
   
   if form.is_valid():
     form.save()
@@ -151,41 +158,41 @@ def update_evenement(request, evenement_id):
 
 
 
+from django.urls import reverse
 def add_evenement(request):
-  submitted = False
-  if request.method == 'POST':
-    if request.user.is_superuser:
-      form = EvenementFormAdmin(request.POST)
-      if form.is_valid():
-        form.save()
-        return HttpResponseRedirect('/evenements?submitted=True')
-      
+    submitted = False
+    if request.method == 'POST':
+        if request.user.is_superuser:
+            form = EvenementFormAdmin(request.POST)
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.approved = True
+                event.save()
+                form.save_m2m()  # Sauvegarde les relations ManyToMany comme les attendees
+                return HttpResponseRedirect(f"{reverse('add-evenement')}?submitted=True")
+        else:
+            form = EvenementForm(request.POST)
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.manager = request.user
+                event.save()
+                form.save_m2m()  # Sauvegarde les relations ManyToMany comme les attendees
+                return HttpResponseRedirect(f"{reverse('add-evenement')}?submitted=True")
     else:
-      form = EvenementForm(request.POST)
-      
-      
-      if form.is_valid():
-          event = form.save(commit=False)
-          event.manager = request.user
-          event.save()
-          return HttpResponseRedirect('/evenements?submitted=True')
-  else:
-    if request.user.is_superuser:
-      form = EvenementFormAdmin
-    else:
-      form = EvenementForm
-    if 'submitted' in request.GET:
-      submitted = True
-  return render(request, 'evenements/add_evenement.html', {'form': form , 'submitted': submitted})
-
-
+        if request.user.is_superuser:
+            form = EvenementFormAdmin()
+        else:
+            form = EvenementForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request, 'evenements/add_evenement.html', {'form': form, 'submitted': submitted})
 
 
 
 
 def update_venue(request, venue_id):  
   venue = Venue.objects.get(pk=venue_id)
-  form=VenueForm(request.POST or None,instance=venue)
+  form=VenueForm(request.POST or None,instance=venue, files=request.FILES or None)
   if form.is_valid():
     form.save()
     return redirect('list-venues')
@@ -226,19 +233,18 @@ def list_venues(request):
 
 
 def add_venue(request):
-  submitted = False
-  if request.method == 'POST':
-    form = VenueForm(request.POST)
-    if form.is_valid():
-      venue = form.save(commit=False)
-      venue.owner = request.user.id
-      venue.save()
-      return HttpResponseRedirect('/add_venue?submitted=True')
+  if request.user.is_superuser:
+    if request.method == 'POST':
+      form = VenueForm(request.POST, request.FILES)
+      if form.is_valid():
+        form.save()
+        return redirect('list-venues')
+    else:
+      form = VenueForm()
+    return render(request, 'evenements/add_venue.html', {'form': form})
   else:
-    form = VenueForm
-    if 'submitted' in request.GET:
-      submitted = True
-  return render(request, 'evenements/add_venue.html', {'form': form , 'submitted': submitted})
+    messages.error(request, 'You are not authorized to add a venue ')
+    return redirect('home')
 
 
 

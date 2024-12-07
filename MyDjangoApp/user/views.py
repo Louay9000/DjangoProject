@@ -27,7 +27,7 @@ def register_user(request):
   else:
     form = RegisterUserForm()
       
-  return render(request, 'authenticate/register_user.html', {'form': form})    
+  return render(request, 'authenticate/register_user.html', {'form': form,'hide_navbar': True  })    
 
 
 
@@ -53,7 +53,9 @@ def login_user(request):
         login(request, user)
         return redirect('home')
       else:
-        messages.info(request, 'Username OR password is incorrect')
+        messages.error(request, 'Username OR password is incorrect')
+        return render(request, 'authenticate/login.html') 
+      
     return render(request, 'authenticate/login.html')
   
   

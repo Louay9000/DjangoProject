@@ -1,42 +1,35 @@
 {% extends 'evenements/base.html' %}
 
 {% block content %}
-    <h>My Events</h>   
-    <br/><br/>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4"><strong>My Events</strong></h1>   
+        <br/>
 
-    {% for event in evenements %}
-      
-    
-    <div class="card">
-      <div class="card-header">
-        {{ event }}
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Venue: {{ event.venue }}</h5>
-        <p class="card-text">
-
-          
-            <li>Date:</li> {{ event.evenement_date }}
-            <li>Venue:</li> {{ event.venue }}
-            <li>Venue Website:</li> {{ event.venue.web }}
-            <li>Manager: </li>{{ event.manager }}
-            <li>Description:</li> {{ event.description }}
-            <li>Attendees:</strong></br>
-                    
-                    {% for user in event.attendees.all %}
-                        <li>{{ user }}</br>
-                    {% endfor %}
-                        </li>
-                      </ul>
-
-
-        </p>  
-      
+        {% for event in evenements %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">{{ event }}</h5>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Venue: {{ event.venue }}</h5>
+                    <p class="card-text">
+                        <ul class="list-unstyled">
+                            <li><strong>Date:</strong> {{ event.evenement_date }}</li>
+                            <li><strong>Venue:</strong> {{ event.venue }}</li>
+                            <li><strong>Venue Website:</strong> <a href="{{ event.venue.web }}">{{ event.venue.web }}</a></li>
+                            <li><strong>Manager:</strong> {{ event.manager }}</li>
+                            <li><strong>Description:</strong> {{ event.description }}</li>
+                            <li><strong>Attendees:</strong>
+                                <ul>
+                                    {% for user in event.attendees.all %}
+                                        <li>{{ user }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </p>  
+                </div>
+            </div>
+        {% endfor %}
     </div>
-
-    {% endfor %}
-  
-  
-
-  
 {% endblock %}

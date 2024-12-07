@@ -19,6 +19,18 @@
         <li> {{ venue.address }}<br/></li>
         <li>{{ venue.zip_code }}<br/></li>
         
+
+
+        {% if venue.image %}
+        <img src="{{ venue.image.url }}" alt="{{ venue.name }}" class="img-thumbnail" style="width: 250px; height: 250px;">
+        {% else %}
+        <p>No image available</p>
+        {% endif %}
+
+
+
+
+
         <li>{{ venue.email_address }}<br/></li>
         <li><a href="{{ venue.web }}">{{venue.web}}</a></li>
         <br/></ul>

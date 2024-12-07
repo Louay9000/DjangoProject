@@ -14,7 +14,20 @@
     <br/>
     <input type="submit" value="Update" class="btn btn-secondary">
   
-  
+  <!-- Ajout de Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- Script pour activer Flatpickr sur l'input de date -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("input[name='evenement_date']", {
+            enableTime: true,           // Permet la sélection de l'heure
+            dateFormat: "Y-m-d H:i",    // Format de date
+            minDate: "today",           // Désactive les dates passées
+        });
+    });
+  </script>
 
 
 {% endblock %}
